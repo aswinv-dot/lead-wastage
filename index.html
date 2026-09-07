@@ -15,7 +15,7 @@
   .wastage-banner .big { font-size: 32px; font-weight: 800; color: #c0392b; line-height: 1; }
   .wastage-banner .sub { font-size: 11px; color: #999; margin-top: 2px; }
   .wastage-banner .divider { width: 1px; height: 40px; background: #e0c0c0; }
-  .summary-bar { display: flex; gap: 12px; padding: 12px 24px; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
+  .summary-bar { display: flex; gap: 12px; padding: 12px 24px; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; align-items: stretch; }
   .sc { border-left: 3px solid #0b3d91; padding: 8px 14px; min-width: 110px; }
   .sc .val { font-size: 20px; font-weight: 700; color: #0b3d91; }
   .sc .lbl { font-size: 10px; color: #888; margin-top: 2px; }
@@ -23,6 +23,11 @@
   .sc.ok .val { color: #0a7a4a; }
   .sc.warn2 { border-left-color: #e67e22; }
   .sc.warn2 .val { color: #e67e22; }
+  .sc.unassigned { border-left-color: #8a1a1a; padding: 8px 14px; }
+  .sc.unassigned .lbl-title { font-size: 10px; font-weight: 700; color: #8a1a1a; text-transform: uppercase; margin-bottom: 6px; }
+  .sc.unassigned .buckets { display: flex; gap: 14px; flex-wrap: wrap; }
+  .sc.unassigned .bucket .val { font-size: 16px; font-weight: 700; }
+  .sc.unassigned .bucket .lbl { font-size: 10px; color: #888; }
   .controls { padding: 10px 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
   .controls label { font-size: 11px; color: #666; }
   .controls input, .controls select { padding: 5px 9px; border: 1px solid #d0d5e8; border-radius: 4px; font-size: 12px; outline: none; background: #fff; }
@@ -66,22 +71,17 @@
   .prog.Other { background: #f0f0f0; color: #777; }
   .zero { color: #ddd; }
   .red { color: #c0392b; font-weight: 600; }
-  .orange { color: #e67e22; font-weight: 600; }
   .fu { background: #fff3cd; color: #856404; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
   .fu-nd { background: #ffe0cc; color: #a04000; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
-  /* team header */
   .team-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; padding: 8px 10px; text-align: left; }
-  /* team total */
   .team-total-row td { background: #1a3a7a !important; color: #fff !important; font-weight: 700; font-size: 11px; padding: 7px 10px; }
   .team-total-row td.red { color: #ffaaaa !important; }
   .team-total-row td.fu-cell { color: #ffe082 !important; }
   .team-total-row td.fu-nd-cell { color: #ffcc99 !important; }
-  /* global total */
   .total-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; }
   .total-row td.red { color: #ffaaaa !important; }
   .total-row td.fu-cell { color: #ffe082 !important; }
   .total-row td.fu-nd-cell { color: #ffcc99 !important; }
-  /* bde total */
   .bde-total td { background: #e8eeff !important; color: #0b3d91 !important; font-weight: 700; font-size: 11px; }
   .bde-total td.red { color: #c0392b !important; }
   .bde-total .bde-cell { background: #e8eeff !important; }
@@ -114,6 +114,15 @@
   <div class="sc"><div class="val" id="s-total">—</div><div class="lbl">Total Assigned</div></div>
   <div class="sc ok"><div class="val" id="s-fu">—</div><div class="lbl">Followups Today</div></div>
   <div class="sc warn2"><div class="val" id="s-fund">—</div><div class="lbl">Followups Not Dialed</div></div>
+  <div class="sc unassigned">
+    <div class="lbl-title">🔴 Unassigned Leads</div>
+    <div class="buckets">
+      <div class="bucket"><div class="val" id="s-uT" style="color:#1a56c4">—</div><div class="lbl">T</div></div>
+      <div class="bucket"><div class="val" id="s-uT1" style="color:#1a7a4a">—</div><div class="lbl">T-1</div></div>
+      <div class="bucket"><div class="val" id="s-uT2" style="color:#8a6a00">—</div><div class="lbl">T-2</div></div>
+      <div class="bucket"><div class="val" id="s-uT3" style="color:#8a1a1a">—</div><div class="lbl">T-3+</div></div>
+    </div>
+  </div>
 </div>
 <div class="controls">
   <label>BDE</label>
@@ -235,13 +244,20 @@ function render(data) {
   });
 
   const gs = sumRows(data);
+
+  // Unassigned — read from first row (same on all rows)
+  const first = data[0] || {};
+  const uT  = n(first.unassigned_T);
+  const uT1 = n(first.unassigned_T1);
+  const uT2 = n(first.unassigned_T2);
+  const uT3 = n(first.unassigned_T3);
+
   let html = totalRow(gs, 'total-row', 'TOTAL', 'All');
 
   const teamOrder = ['Team Chrishtu','Team Kumar','Team Prashanth','Team Samradh','Team Nithin','Team Tanmoy','Unassigned'];
 
   teamOrder.forEach(team => {
     if (!byTeam[team]) return;
-
     const teamRows = Object.values(byTeam[team]).flat();
     const ts = sumRows(teamRows);
 
@@ -296,6 +312,10 @@ function render(data) {
   document.getElementById('w-t1').textContent = gs.wt1.toLocaleString();
   document.getElementById('w-t2').textContent = gs.wt2.toLocaleString();
   document.getElementById('w-t3').textContent = gs.wt3.toLocaleString();
+  document.getElementById('s-uT').textContent = uT.toLocaleString();
+  document.getElementById('s-uT1').textContent = uT1.toLocaleString();
+  document.getElementById('s-uT2').textContent = uT2.toLocaleString();
+  document.getElementById('s-uT3').textContent = uT3.toLocaleString();
 }
 
 function filter() {
