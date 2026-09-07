@@ -115,7 +115,7 @@ function pc(p) {
   if (p.startsWith('Ausbildung')) return 'Ausbildung';
   return p;
 }
-function n(v) { return v || 0; }
+function n(v) { return Number(v) || 0; }
 function td(v) { return v ? `<td>${v}</td>` : `<td class="zero">0</td>`; }
 function tdr(v) { return v ? `<td class="red">${v}</td>` : `<td class="zero">0</td>`; }
 
