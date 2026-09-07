@@ -3,268 +3,87 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Lead Utilisation Dashboard — TerraTern</title>
+<title>Lead Utilisation — TerraTern</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: #f5f6fa;
-    color: #1a1a2e;
-    font-size: 13px;
-  }
-
-  header {
-    background: #0b3d91;
-    color: #fff;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  header h1 {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-  }
-
-  header span {
-    font-size: 11px;
-    opacity: 0.7;
-  }
-
-  .controls {
-    padding: 12px 24px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    background: #fff;
-    border-bottom: 1px solid #e2e6ef;
-  }
-
-  .controls input {
-    padding: 6px 10px;
-    border: 1px solid #d0d5e8;
-    border-radius: 4px;
-    font-size: 12px;
-    width: 200px;
-    outline: none;
-  }
-
-  .controls input:focus { border-color: #0b3d91; }
-
-  .controls select {
-    padding: 6px 10px;
-    border: 1px solid #d0d5e8;
-    border-radius: 4px;
-    font-size: 12px;
-    outline: none;
-    background: #fff;
-  }
-
-  .controls label { font-size: 12px; color: #555; }
-
-  .refresh-btn {
-    margin-left: auto;
-    padding: 6px 14px;
-    background: #0b3d91;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
+  body { font-family: system-ui, sans-serif; background: #f5f6fa; color: #1a1a2e; font-size: 13px; }
+  header { background: #0b3d91; color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  header h1 { font-size: 15px; font-weight: 600; }
+  header span { font-size: 11px; opacity: 0.65; }
+  .summary-bar { display: flex; gap: 12px; padding: 12px 24px; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
+  .sc { border-left: 3px solid #0b3d91; padding: 8px 14px; min-width: 110px; }
+  .sc .val { font-size: 22px; font-weight: 700; color: #0b3d91; }
+  .sc .lbl { font-size: 10px; color: #888; margin-top: 2px; }
+  .sc.warn { border-left-color: #c0392b; }
+  .sc.warn .val { color: #c0392b; }
+  .sc.ok { border-left-color: #0a7a4a; }
+  .sc.ok .val { color: #0a7a4a; }
+  .controls { padding: 10px 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
+  .controls label { font-size: 11px; color: #666; }
+  .controls input, .controls select { padding: 5px 9px; border: 1px solid #d0d5e8; border-radius: 4px; font-size: 12px; outline: none; background: #fff; }
+  .controls input { width: 180px; }
+  .controls input:focus, .controls select:focus { border-color: #0b3d91; }
+  .refresh-btn { margin-left: auto; padding: 5px 14px; background: #0b3d91; color: #fff; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
   .refresh-btn:hover { background: #092d6e; }
-
-  .table-wrap {
-    padding: 16px 24px;
-    overflow-x: auto;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    min-width: 900px;
-  }
-
-  thead tr {
-    background: #0b3d91;
-    color: #fff;
-  }
-
-  thead th {
-    padding: 10px 12px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-  }
-
+  .table-wrap { padding: 16px 24px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); min-width: 860px; }
+  thead tr:first-child { background: #0b3d91; color: #fff; }
+  thead th { padding: 9px 10px; text-align: center; font-weight: 600; font-size: 11px; white-space: nowrap; }
   thead th.left { text-align: left; }
-
-  .subheader th {
-    background: #1a56c4;
-    color: #c8d9ff;
-    font-size: 10px;
-    padding: 5px 12px;
-    font-weight: 500;
-  }
-
+  .subhead th { background: #1a56c4; color: #c8d9ff; font-size: 10px; padding: 4px 10px; font-weight: 500; }
   tbody tr { border-bottom: 1px solid #eef0f7; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #f0f4ff; }
-
-  tbody td {
-    padding: 8px 12px;
-    text-align: center;
-    font-size: 12px;
-    color: #2c2c54;
-  }
-
-  tbody td.left { text-align: left; font-weight: 500; }
-  tbody td.bde-name {
-    text-align: left;
-    font-weight: 600;
-    color: #0b3d91;
-    background: #f7f9ff;
-    vertical-align: top;
-    white-space: nowrap;
-  }
-
-  .prog-tag {
-    display: inline-block;
-    padding: 2px 7px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    background: #e8eeff;
-    color: #0b3d91;
-  }
-
-  .prog-tag.GHC { background: #e8fff4; color: #0a7a4a; }
-  .prog-tag.GOC { background: #fff5e8; color: #a05a00; }
-  .prog-tag.CPR { background: #ffe8f0; color: #a0003e; }
-  .prog-tag.APR { background: #f0e8ff; color: #5a00a0; }
-  .prog-tag.Ausbildung { background: #e8f7ff; color: #005f8a; }
-  .prog-tag.Other { background: #f0f0f0; color: #666; }
-
-  .zero { color: #bbb; }
-  .highlight { color: #c0392b; font-weight: 600; }
-
-  .followup-badge {
-    background: #fff3cd;
-    color: #856404;
-    padding: 2px 7px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 11px;
-  }
-
-  .group-divider td {
-    background: #eef1fa !important;
-    border-top: 2px solid #d0d9f0;
-  }
-
-  .status {
-    padding: 12px 24px;
-    font-size: 12px;
-    color: #666;
-  }
-
-  .status.error { color: #c0392b; }
-
-  .spinner {
-    display: inline-block;
-    width: 14px; height: 14px;
-    border: 2px solid #ccc;
-    border-top-color: #0b3d91;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
-  }
-
+  tbody td { padding: 7px 10px; text-align: center; font-size: 12px; color: #2c2c54; }
+  tbody td.left { text-align: left; }
+  .bde-cell { text-align: left; font-weight: 600; color: #0b3d91; background: #f7f9ff; white-space: nowrap; vertical-align: top; }
+  .prog { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #e8eeff; color: #0b3d91; }
+  .prog.GHC { background: #e8fff4; color: #0a7a4a; }
+  .prog.GOC { background: #fff5e8; color: #a05a00; }
+  .prog.CPR { background: #ffe8f0; color: #a0003e; }
+  .prog.APR { background: #f0e8ff; color: #5a00a0; }
+  .prog.Ausbildung { background: #e8f7ff; color: #005f8a; }
+  .prog.Other { background: #f0f0f0; color: #777; }
+  .zero { color: #ccc; }
+  .red { color: #c0392b; font-weight: 600; }
+  .fu { background: #fff3cd; color: #856404; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
+  .grp-start td { border-top: 2px solid #d0d9f0; }
+  .status { padding: 14px 24px; font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px; }
+  .status.err { color: #c0392b; }
+  .spinner { width: 14px; height: 14px; border: 2px solid #ddd; border-top-color: #0b3d91; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .summary-bar {
-    display: flex;
-    gap: 16px;
-    padding: 12px 24px;
-    flex-wrap: wrap;
-  }
-
-  .summary-card {
-    background: #fff;
-    border-radius: 6px;
-    padding: 10px 16px;
-    border-left: 3px solid #0b3d91;
-    min-width: 120px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  }
-
-  .summary-card .val {
-    font-size: 20px;
-    font-weight: 700;
-    color: #0b3d91;
-  }
-
-  .summary-card .lbl {
-    font-size: 10px;
-    color: #888;
-    margin-top: 2px;
-  }
-
-  .summary-card.warn { border-left-color: #c0392b; }
-  .summary-card.warn .val { color: #c0392b; }
-  .summary-card.ok { border-left-color: #0a7a4a; }
-  .summary-card.ok .val { color: #0a7a4a; }
-
-  @media (max-width: 600px) {
-    header { padding: 12px 16px; }
-    .controls { padding: 10px 16px; }
-    .table-wrap { padding: 10px 8px; }
-    .summary-bar { padding: 10px 16px; }
-  }
+  @media (max-width: 640px) { header, .summary-bar, .controls, .table-wrap { padding-left: 14px; padding-right: 14px; } }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Lead Utilisation Dashboard</h1>
-  <span id="last-updated">Loading...</span>
+  <span id="ts">—</span>
 </header>
 
-<div class="summary-bar" id="summary-bar"></div>
-
-<div class="controls">
-  <label>Search BDE</label>
-  <input type="text" id="search-bde" placeholder="Type BDE name..."/>
-  <label>Program</label>
-  <select id="filter-prog">
-    <option value="">All Programs</option>
-    <option>CPR</option>
-    <option>APR</option>
-    <option>GOC</option>
-    <option>GHC</option>
-    <option>Ausbildung Germany</option>
-    <option>Other</option>
-  </select>
-  <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+<div class="summary-bar">
+  <div class="sc"><div class="val" id="s-bde">—</div><div class="lbl">Active BDEs</div></div>
+  <div class="sc"><div class="val" id="s-total">—</div><div class="lbl">Total Assigned</div></div>
+  <div class="sc warn"><div class="val" id="s-nc">—</div><div class="lbl">Not Called (All)</div></div>
+  <div class="sc ok"><div class="val" id="s-fu">—</div><div class="lbl">Followups Today</div></div>
 </div>
 
-<div class="status" id="status"><span class="spinner"></span> Fetching data...</div>
+<div class="controls">
+  <label>BDE</label>
+  <input id="q-bde" type="text" placeholder="Search BDE..."/>
+  <label>Program</label>
+  <select id="q-prog">
+    <option value="">All Programs</option>
+    <option>CPR</option><option>APR</option><option>GOC</option>
+    <option>GHC</option><option>Ausbildung Germany</option><option>Other</option>
+  </select>
+  <button class="refresh-btn" onclick="load()">↻ Refresh</button>
+</div>
 
-<div class="table-wrap" id="table-wrap" style="display:none">
+<div class="status" id="st"><div class="spinner"></div> Fetching data...</div>
+
+<div class="table-wrap" id="tw" style="display:none">
   <table>
     <thead>
       <tr>
@@ -273,15 +92,15 @@
         <th rowspan="2">Total<br>Assigned</th>
         <th colspan="2">Today (T)</th>
         <th colspan="2">Yesterday (T-1)</th>
-        <th colspan="2">2 Days Ago (T-2)</th>
-        <th colspan="2">Older (T-3+)</th>
+        <th colspan="2">T-2</th>
+        <th colspan="2">T-3+</th>
         <th rowspan="2">Followups<br>Today</th>
       </tr>
-      <tr class="subheader">
-        <th>Assigned</th><th>Not Called</th>
-        <th>Assigned</th><th>Not Called</th>
-        <th>Assigned</th><th>Not Called</th>
-        <th>Assigned</th><th>Not Called</th>
+      <tr class="subhead">
+        <th>Asgn</th><th>Not Called</th>
+        <th>Asgn</th><th>Not Called</th>
+        <th>Asgn</th><th>Not Called</th>
+        <th>Asgn</th><th>Not Called</th>
       </tr>
     </thead>
     <tbody id="tbody"></tbody>
@@ -289,125 +108,97 @@
 </div>
 
 <script>
-const API = 'http://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.json';
+let all = [];
 
-let allData = [];
-
-function progClass(p) {
+function pc(p) {
   if (!p || p === 'Other') return 'Other';
-  if (p === 'Ausbildung Germany') return 'Ausbildung';
+  if (p.startsWith('Ausbildung')) return 'Ausbildung';
   return p;
 }
+function n(v) { return v || 0; }
+function td(v) { return v ? `<td>${v}</td>` : `<td class="zero">0</td>`; }
+function tdr(v) { return v ? `<td class="red">${v}</td>` : `<td class="zero">0</td>`; }
 
-function cell(val) {
-  if (val === 0 || val === null || val === undefined) return `<td class="zero">0</td>`;
-  return `<td>${val}</td>`;
-}
-
-function notCalledCell(val) {
-  if (val === 0 || val === null || val === undefined) return `<td class="zero">0</td>`;
-  return `<td class="highlight">${val}</td>`;
-}
-
-function renderTable(data) {
-  const tbody = document.getElementById('tbody');
+function render(data) {
   const grouped = {};
-
-  data.forEach(row => {
-    const bde = row.bde_name || 'Unassigned';
-    if (!grouped[bde]) grouped[bde] = [];
-    grouped[bde].push(row);
+  data.forEach(r => {
+    const k = r.bde_name || 'Unassigned';
+    if (!grouped[k]) grouped[k] = [];
+    grouped[k].push(r);
   });
 
+  let ta = 0, tnc = 0, tfu = 0;
   let html = '';
-  let totalAssigned = 0, totalNotCalled = 0, totalFollowups = 0;
 
-  Object.entries(grouped).forEach(([bde, rows]) => {
-    html += `<tr class="group-divider">`;
-    html += `<td class="bde-name" rowspan="${rows.length}">${bde}</td>`;
+  Object.entries(grouped).sort((a,b) => a[0].localeCompare(b[0])).forEach(([bde, rows]) => {
+    rows.forEach((r, i) => {
+      const prog = r.program_name || 'Other';
+      const fu = n(r.followups_today);
+      ta += n(r.total_assigned);
+      tnc += n(r.not_called_T) + n(r.not_called_T1) + n(r.not_called_T2) + n(r.not_called_T3);
+      tfu += fu;
 
-    rows.forEach((row, i) => {
-      const prog = row.program_name || 'Other';
-      const pc = progClass(prog);
-      const ta = row.total_assigned || 0;
-      const fu = row.followups_today || 0;
-
-      totalAssigned += ta;
-      totalNotCalled += (row.not_called_T || 0) + (row.not_called_T1 || 0) + (row.not_called_T2 || 0) + (row.not_called_T3 || 0);
-      totalFollowups += fu;
-
-      if (i > 0) html += `<tr>`;
-      html += `<td class="left"><span class="prog-tag ${pc}">${prog}</span></td>`;
-      html += cell(ta);
-      html += cell(row.assigned_T);
-      html += notCalledCell(row.not_called_T);
-      html += cell(row.assigned_T1);
-      html += notCalledCell(row.not_called_T1);
-      html += cell(row.assigned_T2);
-      html += notCalledCell(row.not_called_T2);
-      html += cell(row.assigned_T3);
-      html += notCalledCell(row.not_called_T3);
-      html += fu > 0 ? `<td><span class="followup-badge">${fu}</span></td>` : `<td class="zero">0</td>`;
+      html += `<tr${i === 0 ? ' class="grp-start"' : ''}>`;
+      if (i === 0) html += `<td class="bde-cell" rowspan="${rows.length}">${bde}</td>`;
+      html += `<td class="left"><span class="prog ${pc(prog)}">${prog}</span></td>`;
+      html += td(n(r.total_assigned));
+      html += td(n(r.assigned_T));
+      html += tdr(n(r.not_called_T));
+      html += td(n(r.assigned_T1));
+      html += tdr(n(r.not_called_T1));
+      html += td(n(r.assigned_T2));
+      html += tdr(n(r.not_called_T2));
+      html += td(n(r.assigned_T3));
+      html += tdr(n(r.not_called_T3));
+      html += fu ? `<td><span class="fu">${fu}</span></td>` : `<td class="zero">0</td>`;
       html += `</tr>`;
     });
   });
 
-  tbody.innerHTML = html;
-
-  // Summary bar
-  document.getElementById('summary-bar').innerHTML = `
-    <div class="summary-card"><div class="val">${Object.keys(grouped).length}</div><div class="lbl">Active BDEs</div></div>
-    <div class="summary-card"><div class="val">${totalAssigned.toLocaleString()}</div><div class="lbl">Total Assigned</div></div>
-    <div class="summary-card warn"><div class="val">${totalNotCalled.toLocaleString()}</div><div class="lbl">Not Called (All)</div></div>
-    <div class="summary-card ok"><div class="val">${totalFollowups.toLocaleString()}</div><div class="lbl">Followups Today</div></div>
-  `;
+  document.getElementById('tbody').innerHTML = html;
+  document.getElementById('s-bde').textContent = Object.keys(grouped).length;
+  document.getElementById('s-total').textContent = ta.toLocaleString();
+  document.getElementById('s-nc').textContent = tnc.toLocaleString();
+  document.getElementById('s-fu').textContent = tfu.toLocaleString();
 }
 
-function filterAndRender() {
-  const bdeQ = document.getElementById('search-bde').value.toLowerCase();
-  const progQ = document.getElementById('filter-prog').value;
-
-  let filtered = allData.filter(r => {
-    const bdeMatch = !bdeQ || (r.bde_name || '').toLowerCase().includes(bdeQ);
-    const progMatch = !progQ || (r.program_name || 'Other') === progQ;
-    return bdeMatch && progMatch;
-  });
-
-  renderTable(filtered);
+function filter() {
+  const bq = document.getElementById('q-bde').value.toLowerCase();
+  const pq = document.getElementById('q-prog').value;
+  render(all.filter(r =>
+    (!bq || (r.bde_name || '').toLowerCase().includes(bq)) &&
+    (!pq || (r.program_name || 'Other') === pq)
+  ));
 }
 
-document.getElementById('search-bde').addEventListener('input', filterAndRender);
-document.getElementById('filter-prog').addEventListener('change', filterAndRender);
+document.getElementById('q-bde').addEventListener('input', filter);
+document.getElementById('q-prog').addEventListener('change', filter);
 
-async function loadData() {
-  document.getElementById('status').innerHTML = '<span class="spinner"></span> Fetching data...';
-  document.getElementById('status').className = 'status';
-  document.getElementById('table-wrap').style.display = 'none';
+async function load() {
+  const st = document.getElementById('st');
+  st.innerHTML = '<div class="spinner"></div> Fetching data...';
+  st.className = 'status';
+  st.style.display = 'flex';
+  document.getElementById('tw').style.display = 'none';
 
   try {
-    const res = await fetch(API);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const res = await fetch('/api/data');
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
     const json = await res.json();
+    if (json.error) throw new Error(json.error);
 
-    // Metabase public JSON format: { data: { rows: [], cols: [] } }
-    const cols = json.data.cols.map(c => c.name);
-    allData = json.data.rows.map(row => {
-      const obj = {};
-      cols.forEach((c, i) => obj[c] = row[i]);
-      return obj;
-    });
-
-    document.getElementById('status').style.display = 'none';
-    document.getElementById('table-wrap').style.display = 'block';
-    document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-IN');
-    filterAndRender();
-  } catch (e) {
-    document.getElementById('status').innerHTML = `⚠ Could not load data: ${e.message}. Check Metabase is accessible.`;
-    document.getElementById('status').className = 'status error';
+    all = json.rows;
+    st.style.display = 'none';
+    document.getElementById('tw').style.display = 'block';
+    document.getElementById('ts').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN');
+    filter();
+  } catch(e) {
+    st.innerHTML = `⚠ ${e.message}`;
+    st.className = 'status err';
   }
 }
 
-loadData();
+load();
 </script>
 </body>
 </html>
