@@ -24,6 +24,8 @@
   .sc .lbl { font-size: 10px; color: #888; margin-top: 2px; }
   .sc.ok { border-left-color: #0a7a4a; }
   .sc.ok .val { color: #0a7a4a; }
+  .sc.warn2 { border-left-color: #e67e22; }
+  .sc.warn2 .val { color: #e67e22; }
 
   .controls { padding: 10px 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
   .controls label { font-size: 11px; color: #666; }
@@ -34,7 +36,7 @@
   .refresh-btn:hover { background: #092d6e; }
 
   .table-wrap { padding: 16px 24px; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); min-width: 900px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); min-width: 1000px; }
 
   thead tr:first-child { background: #0b3d91; color: #fff; }
   thead th { padding: 9px 10px; text-align: center; font-weight: 600; font-size: 11px; white-space: nowrap; }
@@ -44,11 +46,13 @@
   .h-t1 { background: #1a7a4a; color: #fff; }
   .h-t2 { background: #8a6a00; color: #fff; }
   .h-t3 { background: #8a1a1a; color: #fff; }
+  .h-fu { background: #7a5a00; color: #fff; }
   .subhead th { font-size: 10px; padding: 4px 10px; font-weight: 500; color: rgba(255,255,255,0.85); }
   .subhead .h-t  { background: #2565d4; }
   .subhead .h-t1 { background: #228a5a; }
   .subhead .h-t2 { background: #9a7a00; }
   .subhead .h-t3 { background: #9a2a2a; }
+  .subhead .h-fu { background: #8a6a00; }
 
   tbody tr { border-bottom: 1px solid #eef0f7; }
   tbody tr:last-child { border-bottom: none; }
@@ -60,6 +64,7 @@
   .c-t1 { background: rgba(20,140,80,0.04); }
   .c-t2 { background: rgba(180,140,0,0.05); }
   .c-t3 { background: rgba(180,30,30,0.05); }
+  .c-fu { background: rgba(180,140,0,0.07); }
 
   .bde-cell { text-align: left; font-weight: 600; color: #0b3d91; background: #f7f9ff; white-space: nowrap; vertical-align: top; }
 
@@ -73,27 +78,18 @@
 
   .zero { color: #ddd; }
   .red { color: #c0392b; font-weight: 600; }
+  .orange { color: #e67e22; font-weight: 600; }
   .fu { background: #fff3cd; color: #856404; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
+  .fu-nd { background: #ffe0cc; color: #a04000; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
 
-  /* team header row */
-  .team-row td {
-    background: #0b3d91 !important;
-    color: #fff !important;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 8px 10px;
-    text-align: left;
-    letter-spacing: 0.3px;
-  }
-
-  /* total row (global) */
+  .team-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; padding: 8px 10px; text-align: left; letter-spacing: 0.3px; }
   .total-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; }
   .total-row td.red { color: #ffaaaa !important; }
   .total-row td.fu-cell { color: #ffe082 !important; }
-
-  /* bde total row */
+  .total-row td.fu-nd-cell { color: #ffcc99 !important; }
   .bde-total td { background: #e8eeff !important; color: #0b3d91 !important; font-weight: 700; font-size: 11px; }
   .bde-total td.red { color: #c0392b !important; }
+  .bde-total td.orange { color: #e67e22 !important; }
   .bde-total .bde-cell { background: #e8eeff !important; }
 
   .grp-start td { border-top: 2px solid #d0d9f0; }
@@ -129,6 +125,7 @@
   <div class="sc"><div class="val" id="s-bde">—</div><div class="lbl">Active BDEs</div></div>
   <div class="sc"><div class="val" id="s-total">—</div><div class="lbl">Total Assigned</div></div>
   <div class="sc ok"><div class="val" id="s-fu">—</div><div class="lbl">Followups Today</div></div>
+  <div class="sc warn2"><div class="val" id="s-fund">—</div><div class="lbl">Followups Not Dialed</div></div>
 </div>
 
 <div class="controls">
@@ -166,13 +163,14 @@
         <th colspan="2" class="h-t1">Yesterday (T-1)</th>
         <th colspan="2" class="h-t2">T-2</th>
         <th colspan="2" class="h-t3">T-3+</th>
-        <th rowspan="2">Followups<br>Today</th>
+        <th colspan="2" class="h-fu">Followups Today</th>
       </tr>
       <tr class="subhead">
         <th class="h-t">Asgn</th><th class="h-t">Not Called</th>
         <th class="h-t1">Asgn</th><th class="h-t1">Not Called</th>
         <th class="h-t2">Asgn</th><th class="h-t2">Not Called</th>
         <th class="h-t3">Asgn</th><th class="h-t3">Not Called</th>
+        <th class="h-fu">Total</th><th class="h-fu">Not Dialed</th>
       </tr>
     </thead>
     <tbody id="tbody"></tbody>
@@ -185,25 +183,19 @@ let all = [];
 const PROG_ORDER = ['GOC','GHC','Ausbildung Germany','APR','CPR','Other'];
 
 const TEAMS = {
-  'Team Chrishtu': ['Christhu','Azhar','Ijaz','Sudheesh','Debalina','Satya','Bijith','R.Mosikhaa','mounika.jalagam','Kavitha Natarajan','priyanshi.kumari','toushif.khan','Ashay A Zade','Naitik Sao','Saheb Kar','sreelakshmi.ks','Avinash A'],
-  'Team Kumar': ['KumarGuru','Aaliya.Firdous','Nandana Dr','Divyabharathi','Vivin','Gokul','Ajay sable','Abinandanan','khyathi.lotugadda','navya.s','rahuls.rv','haritha.senagala','ravina.s','Namrata Belgali','anvitha.g','urmi.bhaumik','Soumya Gaur'],
-  'Team Prashanth': ['Prashanth','Bharati','Sunaina','Rithik','pius.pinto','kalavati.kore','ananya.s','madhu.s','Adnan Ahmed','rahul.choudhary','stuti.singh','Harsha Gowda','Mohammed Anees Ahmed','jayita.sarkar','GN Anusha','Sujoy Subham Padhi'],
-  'Team Samradh': ['Samradh Bhat M','Rakshitha SV','Maanika','Harini','Jyotiprakash','Adwaith Santhosh'],
-  'Team Nithin': ['nithin.kumar','Pratham','Mouleessh','Sammed','Amrut','Sam Ajith','Nelson Godwin C'],
-  'Team Tanmoy': ['Tanmoy Mudi','Mayank Tiwari','Bandita Jena','Suman','prashanth.m','Frankeline Joshua','Neethu Jain GN']
+  'Team Chrishtu': ['christhu','azhar','ijaz','sudheesh','debalina','satya','bijith','r.mosikhaa','mounika.jalagam','kavitha natarajan','priyanshi.kumari','toushif.khan','ashay a zade','naitik sao','saheb kar','sreelakshmi.ks','avinash a'],
+  'Team Kumar': ['kumarguru','aaliya.firdous','aaliya firdous','nandana dr','divyabharathi','vivin','gokul','ajay sable','abinandanan','khyathi.lotugadda','navya.s','rahuls.rv','haritha.senagala','ravina.s','namrata belgali','anvitha.g','urmi.bhaumik','soumya gaur'],
+  'Team Prashanth': ['prashanth','bharati','sunaina','rithik','pius.pinto','kalavati.kore','ananya.s','madhu.s','adnan ahmed','rahul.choudhary','stuti.singh','harsha gowda','mohammed anees ahmed','jayita.sarkar','gn anusha','sujoy subham padhi'],
+  'Team Samradh': ['samradh bhat m','rakshitha sv','maanika','harini','jyotiprakash','adwaith santhosh'],
+  'Team Nithin': ['nithin.kumar','pratham','mouleessh','sammed','amrut','sam ajith','nelson godwin c'],
+  'Team Tanmoy': ['tanmoy mudi','mayank tiwari','bandita jena','suman','prashanth.m','frankeline joshua','neethu jain gn']
 };
 
-// Build reverse map: bde name (lowercase) -> team
-const BDE_TEAM = {};
-Object.entries(TEAMS).forEach(([team, members]) => {
-  members.forEach(m => BDE_TEAM[m.toLowerCase()] = team);
-});
-
 function getTeam(bdeName) {
-  if (!bdeName) return 'Other';
+  if (!bdeName) return 'Unassigned';
   const lower = bdeName.toLowerCase();
-  for (const [k, v] of Object.entries(BDE_TEAM)) {
-    if (lower.includes(k) || k.includes(lower)) return v;
+  for (const [team, members] of Object.entries(TEAMS)) {
+    if (members.some(m => lower.includes(m) || m.includes(lower))) return team;
   }
   return 'Unassigned';
 }
@@ -216,6 +208,7 @@ function pc(p) {
 function n(v) { return Number(v) || 0; }
 function td(v, cls) { return v ? `<td class="${cls||''}">${v.toLocaleString()}</td>` : `<td class="zero ${cls||''}">0</td>`; }
 function tdr(v, cls) { return v ? `<td class="red ${cls||''}">${v.toLocaleString()}</td>` : `<td class="zero ${cls||''}">0</td>`; }
+function tdo(v, cls) { return v ? `<td class="orange ${cls||''}">${v.toLocaleString()}</td>` : `<td class="zero ${cls||''}">0</td>`; }
 
 function sortProgs(rows) {
   return [...rows].sort((a, b) => {
@@ -226,7 +219,6 @@ function sortProgs(rows) {
 }
 
 function render(data) {
-  // Group by BDE
   const byBde = {};
   data.forEach(r => {
     const k = r.bde_name || 'Unassigned';
@@ -234,7 +226,6 @@ function render(data) {
     byBde[k].push(r);
   });
 
-  // Group BDEs by team
   const byTeam = {};
   Object.entries(byBde).forEach(([bde, rows]) => {
     const team = getTeam(bde);
@@ -242,19 +233,19 @@ function render(data) {
     byTeam[team][bde] = rows;
   });
 
-  let ta=0, wt=0, wt1=0, wt2=0, wt3=0, tfu=0;
+  let ta=0, wt=0, wt1=0, wt2=0, wt3=0, tfu=0, tfund=0;
   let at=0, at1=0, at2=0, at3=0;
 
   data.forEach(r => {
-    ta  += n(r.total_assigned);
-    at  += n(r.assigned_T);   wt  += n(r.not_called_T);
-    at1 += n(r.assigned_T1);  wt1 += n(r.not_called_T1);
-    at2 += n(r.assigned_T2);  wt2 += n(r.not_called_T2);
-    at3 += n(r.assigned_T3);  wt3 += n(r.not_called_T3);
-    tfu += n(r.followups_today);
+    ta   += n(r.total_assigned);
+    at   += n(r.assigned_T);    wt   += n(r.not_called_T);
+    at1  += n(r.assigned_T1);   wt1  += n(r.not_called_T1);
+    at2  += n(r.assigned_T2);   wt2  += n(r.not_called_T2);
+    at3  += n(r.assigned_T3);   wt3  += n(r.not_called_T3);
+    tfu  += n(r.followups_today);
+    tfund+= n(r.followups_today_not_dialed);
   });
 
-  // Global total row
   let html = `<tr class="total-row">
     <td class="left">TOTAL</td><td class="left">All</td>
     <td>${ta.toLocaleString()}</td>
@@ -262,7 +253,8 @@ function render(data) {
     <td class="c-t1">${at1.toLocaleString()}</td><td class="c-t1 red">${wt1.toLocaleString()}</td>
     <td class="c-t2">${at2.toLocaleString()}</td><td class="c-t2 red">${wt2.toLocaleString()}</td>
     <td class="c-t3">${at3.toLocaleString()}</td><td class="c-t3 red">${wt3.toLocaleString()}</td>
-    <td class="fu-cell">${tfu.toLocaleString()}</td>
+    <td class="c-fu fu-cell">${tfu.toLocaleString()}</td>
+    <td class="c-fu fu-nd-cell">${tfund.toLocaleString()}</td>
   </tr>`;
 
   const teamOrder = ['Team Chrishtu','Team Kumar','Team Prashanth','Team Samradh','Team Nithin','Team Tanmoy','Unassigned'];
@@ -270,37 +262,38 @@ function render(data) {
   teamOrder.forEach(team => {
     if (!byTeam[team]) return;
 
-    // Team header
-    html += `<tr class="team-row"><td colspan="12">🏷 ${team}</td></tr>`;
+    html += `<tr class="team-row"><td colspan="13">🏷 ${team}</td></tr>`;
 
     Object.entries(byTeam[team]).sort((a,b) => a[0].localeCompare(b[0])).forEach(([bde, rows]) => {
       const sorted = sortProgs(rows);
 
-      // BDE total
-      let bta=0, bat=0, bwt=0, bat1=0, bwt1=0, bat2=0, bwt2=0, bat3=0, bwt3=0, bfu=0;
+      let bta=0,bat=0,bwt=0,bat1=0,bwt1=0,bat2=0,bwt2=0,bat3=0,bwt3=0,bfu=0,bfund=0;
       sorted.forEach(r => {
-        bta += n(r.total_assigned);
-        bat += n(r.assigned_T);   bwt  += n(r.not_called_T);
-        bat1+= n(r.assigned_T1);  bwt1 += n(r.not_called_T1);
-        bat2+= n(r.assigned_T2);  bwt2 += n(r.not_called_T2);
-        bat3+= n(r.assigned_T3);  bwt3 += n(r.not_called_T3);
-        bfu += n(r.followups_today);
+        bta  += n(r.total_assigned);
+        bat  += n(r.assigned_T);    bwt  += n(r.not_called_T);
+        bat1 += n(r.assigned_T1);   bwt1 += n(r.not_called_T1);
+        bat2 += n(r.assigned_T2);   bwt2 += n(r.not_called_T2);
+        bat3 += n(r.assigned_T3);   bwt3 += n(r.not_called_T3);
+        bfu  += n(r.followups_today);
+        bfund+= n(r.followups_today_not_dialed);
       });
 
       html += `<tr class="bde-total grp-start">
         <td class="bde-cell" rowspan="${sorted.length + 1}">${bde}</td>
         <td class="left" style="color:#666;font-size:10px">ALL</td>
         <td>${bta.toLocaleString()}</td>
-        <td class="c-t">${bat.toLocaleString()}</td><td class="c-t red">${bwt||'<span class="zero">0</span>'}</td>
-        <td class="c-t1">${bat1.toLocaleString()}</td><td class="c-t1 red">${bwt1||'<span class="zero">0</span>'}</td>
-        <td class="c-t2">${bat2.toLocaleString()}</td><td class="c-t2 red">${bwt2||'<span class="zero">0</span>'}</td>
-        <td class="c-t3">${bat3.toLocaleString()}</td><td class="c-t3 red">${bwt3||'<span class="zero">0</span>'}</td>
-        <td>${bfu ? `<span class="fu">${bfu}</span>` : '<span class="zero">0</span>'}</td>
+        <td class="c-t">${bat.toLocaleString()}</td><td class="c-t red">${bwt || '<span class="zero">0</span>'}</td>
+        <td class="c-t1">${bat1.toLocaleString()}</td><td class="c-t1 red">${bwt1 || '<span class="zero">0</span>'}</td>
+        <td class="c-t2">${bat2.toLocaleString()}</td><td class="c-t2 red">${bwt2 || '<span class="zero">0</span>'}</td>
+        <td class="c-t3">${bat3.toLocaleString()}</td><td class="c-t3 red">${bwt3 || '<span class="zero">0</span>'}</td>
+        <td class="c-fu">${bfu ? `<span class="fu">${bfu}</span>` : '<span class="zero">0</span>'}</td>
+        <td class="c-fu">${bfund ? `<span class="fu-nd">${bfund}</span>` : '<span class="zero">0</span>'}</td>
       </tr>`;
 
       sorted.forEach(r => {
         const prog = r.program_name || 'Other';
         const fu = n(r.followups_today);
+        const fund = n(r.followups_today_not_dialed);
         html += `<tr>`;
         html += `<td class="left"><span class="prog ${pc(prog)}">${prog}</span></td>`;
         html += td(n(r.total_assigned));
@@ -312,7 +305,8 @@ function render(data) {
         html += tdr(n(r.not_called_T2),'c-t2');
         html += td(n(r.assigned_T3),'c-t3');
         html += tdr(n(r.not_called_T3),'c-t3');
-        html += fu ? `<td><span class="fu">${fu}</span></td>` : `<td class="zero">0</td>`;
+        html += fu ? `<td class="c-fu"><span class="fu">${fu}</span></td>` : `<td class="zero c-fu">0</td>`;
+        html += fund ? `<td class="c-fu"><span class="fu-nd">${fund}</span></td>` : `<td class="zero c-fu">0</td>`;
         html += `</tr>`;
       });
     });
@@ -322,6 +316,7 @@ function render(data) {
   document.getElementById('s-bde').textContent = Object.keys(byBde).length;
   document.getElementById('s-total').textContent = ta.toLocaleString();
   document.getElementById('s-fu').textContent = tfu.toLocaleString();
+  document.getElementById('s-fund').textContent = tfund.toLocaleString();
   document.getElementById('w-total').textContent = (wt+wt1+wt2+wt3).toLocaleString();
   document.getElementById('w-t').textContent = wt.toLocaleString();
   document.getElementById('w-t1').textContent = wt1.toLocaleString();
@@ -333,7 +328,6 @@ function filter() {
   const bq = document.getElementById('q-bde').value.toLowerCase();
   const pq = document.getElementById('q-prog').value;
   const tq = document.getElementById('q-team').value;
-
   render(all.filter(r => {
     const bdeMatch = !bq || (r.bde_name || '').toLowerCase().includes(bq);
     const progMatch = !pq || (r.program_name || 'Other') === pq;
