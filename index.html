@@ -7,17 +7,14 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f5f6fa; color: #1a1a2e; font-size: 13px; }
-
   header { background: #0b3d91; color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   header h1 { font-size: 15px; font-weight: 600; }
   header span { font-size: 11px; opacity: 0.65; }
-
   .wastage-banner { background: #fff0f0; border-bottom: 2px solid #c0392b; padding: 14px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .wastage-banner .label { font-size: 11px; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .wastage-banner .big { font-size: 32px; font-weight: 800; color: #c0392b; line-height: 1; }
   .wastage-banner .sub { font-size: 11px; color: #999; margin-top: 2px; }
   .wastage-banner .divider { width: 1px; height: 40px; background: #e0c0c0; }
-
   .summary-bar { display: flex; gap: 12px; padding: 12px 24px; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
   .sc { border-left: 3px solid #0b3d91; padding: 8px 14px; min-width: 110px; }
   .sc .val { font-size: 20px; font-weight: 700; color: #0b3d91; }
@@ -26,7 +23,6 @@
   .sc.ok .val { color: #0a7a4a; }
   .sc.warn2 { border-left-color: #e67e22; }
   .sc.warn2 .val { color: #e67e22; }
-
   .controls { padding: 10px 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e2e6ef; }
   .controls label { font-size: 11px; color: #666; }
   .controls input, .controls select { padding: 5px 9px; border: 1px solid #d0d5e8; border-radius: 4px; font-size: 12px; outline: none; background: #fff; }
@@ -34,14 +30,11 @@
   .controls input:focus, .controls select:focus { border-color: #0b3d91; }
   .refresh-btn { margin-left: auto; padding: 5px 14px; background: #0b3d91; color: #fff; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
   .refresh-btn:hover { background: #092d6e; }
-
   .table-wrap { padding: 16px 24px; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); min-width: 1000px; }
-
   thead tr:first-child { background: #0b3d91; color: #fff; }
   thead th { padding: 9px 10px; text-align: center; font-weight: 600; font-size: 11px; white-space: nowrap; }
   thead th.left { text-align: left; }
-
   .h-t  { background: #1a56c4; color: #fff; }
   .h-t1 { background: #1a7a4a; color: #fff; }
   .h-t2 { background: #8a6a00; color: #fff; }
@@ -53,21 +46,17 @@
   .subhead .h-t2 { background: #9a7a00; }
   .subhead .h-t3 { background: #9a2a2a; }
   .subhead .h-fu { background: #8a6a00; }
-
   tbody tr { border-bottom: 1px solid #eef0f7; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #f0f4ff; }
   tbody td { padding: 7px 10px; text-align: center; font-size: 12px; color: #2c2c54; }
   tbody td.left { text-align: left; }
-
   .c-t  { background: rgba(30,90,210,0.04); }
   .c-t1 { background: rgba(20,140,80,0.04); }
   .c-t2 { background: rgba(180,140,0,0.05); }
   .c-t3 { background: rgba(180,30,30,0.05); }
   .c-fu { background: rgba(180,140,0,0.07); }
-
   .bde-cell { text-align: left; font-weight: 600; color: #0b3d91; background: #f7f9ff; white-space: nowrap; vertical-align: top; }
-
   .prog { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #e8eeff; color: #0b3d91; }
   .prog.GHC { background: #e8fff4; color: #0a7a4a; }
   .prog.GOC { background: #fff5e8; color: #a05a00; }
@@ -75,40 +64,40 @@
   .prog.APR { background: #f0e8ff; color: #5a00a0; }
   .prog.Ausbildung { background: #e8f7ff; color: #005f8a; }
   .prog.Other { background: #f0f0f0; color: #777; }
-
   .zero { color: #ddd; }
   .red { color: #c0392b; font-weight: 600; }
   .orange { color: #e67e22; font-weight: 600; }
   .fu { background: #fff3cd; color: #856404; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
   .fu-nd { background: #ffe0cc; color: #a04000; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-size: 11px; }
-
-  .team-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; padding: 8px 10px; text-align: left; letter-spacing: 0.3px; }
+  /* team header */
+  .team-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; padding: 8px 10px; text-align: left; }
+  /* team total */
+  .team-total-row td { background: #1a3a7a !important; color: #fff !important; font-weight: 700; font-size: 11px; padding: 7px 10px; }
+  .team-total-row td.red { color: #ffaaaa !important; }
+  .team-total-row td.fu-cell { color: #ffe082 !important; }
+  .team-total-row td.fu-nd-cell { color: #ffcc99 !important; }
+  /* global total */
   .total-row td { background: #0b3d91 !important; color: #fff !important; font-weight: 700; font-size: 12px; }
   .total-row td.red { color: #ffaaaa !important; }
   .total-row td.fu-cell { color: #ffe082 !important; }
   .total-row td.fu-nd-cell { color: #ffcc99 !important; }
+  /* bde total */
   .bde-total td { background: #e8eeff !important; color: #0b3d91 !important; font-weight: 700; font-size: 11px; }
   .bde-total td.red { color: #c0392b !important; }
-  .bde-total td.orange { color: #e67e22 !important; }
   .bde-total .bde-cell { background: #e8eeff !important; }
-
   .grp-start td { border-top: 2px solid #d0d9f0; }
-
   .status { padding: 14px 24px; font-size: 12px; color: #666; display: flex; align-items: center; gap: 8px; }
   .status.err { color: #c0392b; }
   .spinner { width: 14px; height: 14px; border: 2px solid #ddd; border-top-color: #0b3d91; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   @media (max-width: 640px) { header, .wastage-banner, .summary-bar, .controls, .table-wrap { padding-left: 14px; padding-right: 14px; } }
 </style>
 </head>
 <body>
-
 <header>
   <h1>Lead Utilisation Dashboard</h1>
   <span id="ts">—</span>
 </header>
-
 <div class="wastage-banner">
   <div><div class="label">⚠ Lead Wastage</div><div class="big" id="w-total">—</div><div class="sub">Total leads never called</div></div>
   <div class="divider"></div>
@@ -120,14 +109,12 @@
   <div class="divider"></div>
   <div><div class="label">T-3+</div><div class="big" style="color:#8a1a1a" id="w-t3">—</div><div class="sub">Not called older</div></div>
 </div>
-
 <div class="summary-bar">
   <div class="sc"><div class="val" id="s-bde">—</div><div class="lbl">Active BDEs</div></div>
   <div class="sc"><div class="val" id="s-total">—</div><div class="lbl">Total Assigned</div></div>
   <div class="sc ok"><div class="val" id="s-fu">—</div><div class="lbl">Followups Today</div></div>
   <div class="sc warn2"><div class="val" id="s-fund">—</div><div class="lbl">Followups Not Dialed</div></div>
 </div>
-
 <div class="controls">
   <label>BDE</label>
   <input id="q-bde" type="text" placeholder="Search BDE..."/>
@@ -140,18 +127,12 @@
   <label>Team</label>
   <select id="q-team">
     <option value="">All Teams</option>
-    <option>Team Chrishtu</option>
-    <option>Team Kumar</option>
-    <option>Team Prashanth</option>
-    <option>Team Samradh</option>
-    <option>Team Nithin</option>
-    <option>Team Tanmoy</option>
+    <option>Team Chrishtu</option><option>Team Kumar</option><option>Team Prashanth</option>
+    <option>Team Samradh</option><option>Team Nithin</option><option>Team Tanmoy</option>
   </select>
   <button class="refresh-btn" onclick="load()">↻ Refresh</button>
 </div>
-
 <div class="status" id="st"><div class="spinner"></div> Fetching data...</div>
-
 <div class="table-wrap" id="tw" style="display:none">
   <table>
     <thead>
@@ -176,12 +157,9 @@
     <tbody id="tbody"></tbody>
   </table>
 </div>
-
 <script>
 let all = [];
-
 const PROG_ORDER = ['GOC','GHC','Ausbildung Germany','APR','CPR','Other'];
-
 const TEAMS = {
   'Team Chrishtu': ['christhu','azhar','ijaz','sudheesh','debalina','satya','bijith','r.mosikhaa','mounika.jalagam','kavitha natarajan','priyanshi.kumari','toushif.khan','ashay a zade','naitik sao','saheb kar','sreelakshmi.ks','avinash a'],
   'Team Kumar': ['kumarguru','aaliya.firdous','aaliya firdous','nandana dr','divyabharathi','vivin','gokul','ajay sable','abinandanan','khyathi.lotugadda','navya.s','rahuls.rv','haritha.senagala','ravina.s','namrata belgali','anvitha.g','urmi.bhaumik','soumya gaur'],
@@ -190,7 +168,6 @@ const TEAMS = {
   'Team Nithin': ['nithin.kumar','pratham','mouleessh','sammed','amrut','sam ajith','nelson godwin c'],
   'Team Tanmoy': ['tanmoy mudi','mayank tiwari','bandita jena','suman','prashanth.m','frankeline joshua','neethu jain gn']
 };
-
 function getTeam(bdeName) {
   if (!bdeName) return 'Unassigned';
   const lower = bdeName.toLowerCase();
@@ -199,7 +176,6 @@ function getTeam(bdeName) {
   }
   return 'Unassigned';
 }
-
 function pc(p) {
   if (!p || p === 'Other') return 'Other';
   if (p.startsWith('Ausbildung')) return 'Ausbildung';
@@ -208,7 +184,32 @@ function pc(p) {
 function n(v) { return Number(v) || 0; }
 function td(v, cls) { return v ? `<td class="${cls||''}">${v.toLocaleString()}</td>` : `<td class="zero ${cls||''}">0</td>`; }
 function tdr(v, cls) { return v ? `<td class="red ${cls||''}">${v.toLocaleString()}</td>` : `<td class="zero ${cls||''}">0</td>`; }
-function tdo(v, cls) { return v ? `<td class="orange ${cls||''}">${v.toLocaleString()}</td>` : `<td class="zero ${cls||''}">0</td>`; }
+
+function sumRows(rows) {
+  return rows.reduce((acc, r) => {
+    acc.ta   += n(r.total_assigned);
+    acc.at   += n(r.assigned_T);    acc.wt   += n(r.not_called_T);
+    acc.at1  += n(r.assigned_T1);   acc.wt1  += n(r.not_called_T1);
+    acc.at2  += n(r.assigned_T2);   acc.wt2  += n(r.not_called_T2);
+    acc.at3  += n(r.assigned_T3);   acc.wt3  += n(r.not_called_T3);
+    acc.fu   += n(r.followups_today);
+    acc.fund += n(r.followups_today_not_dialed);
+    return acc;
+  }, {ta:0,at:0,wt:0,at1:0,wt1:0,at2:0,wt2:0,at3:0,wt3:0,fu:0,fund:0});
+}
+
+function totalRow(s, cls, label1, label2) {
+  return `<tr class="${cls}">
+    <td class="left">${label1}</td><td class="left">${label2}</td>
+    <td>${s.ta.toLocaleString()}</td>
+    <td class="c-t">${s.at.toLocaleString()}</td><td class="c-t red">${s.wt.toLocaleString()}</td>
+    <td class="c-t1">${s.at1.toLocaleString()}</td><td class="c-t1 red">${s.wt1.toLocaleString()}</td>
+    <td class="c-t2">${s.at2.toLocaleString()}</td><td class="c-t2 red">${s.wt2.toLocaleString()}</td>
+    <td class="c-t3">${s.at3.toLocaleString()}</td><td class="c-t3 red">${s.wt3.toLocaleString()}</td>
+    <td class="c-fu fu-cell">${s.fu.toLocaleString()}</td>
+    <td class="c-fu fu-nd-cell">${s.fund.toLocaleString()}</td>
+  </tr>`;
+}
 
 function sortProgs(rows) {
   return [...rows].sort((a, b) => {
@@ -233,61 +234,34 @@ function render(data) {
     byTeam[team][bde] = rows;
   });
 
-  let ta=0, wt=0, wt1=0, wt2=0, wt3=0, tfu=0, tfund=0;
-  let at=0, at1=0, at2=0, at3=0;
-
-  data.forEach(r => {
-    ta   += n(r.total_assigned);
-    at   += n(r.assigned_T);    wt   += n(r.not_called_T);
-    at1  += n(r.assigned_T1);   wt1  += n(r.not_called_T1);
-    at2  += n(r.assigned_T2);   wt2  += n(r.not_called_T2);
-    at3  += n(r.assigned_T3);   wt3  += n(r.not_called_T3);
-    tfu  += n(r.followups_today);
-    tfund+= n(r.followups_today_not_dialed);
-  });
-
-  let html = `<tr class="total-row">
-    <td class="left">TOTAL</td><td class="left">All</td>
-    <td>${ta.toLocaleString()}</td>
-    <td class="c-t">${at.toLocaleString()}</td><td class="c-t red">${wt.toLocaleString()}</td>
-    <td class="c-t1">${at1.toLocaleString()}</td><td class="c-t1 red">${wt1.toLocaleString()}</td>
-    <td class="c-t2">${at2.toLocaleString()}</td><td class="c-t2 red">${wt2.toLocaleString()}</td>
-    <td class="c-t3">${at3.toLocaleString()}</td><td class="c-t3 red">${wt3.toLocaleString()}</td>
-    <td class="c-fu fu-cell">${tfu.toLocaleString()}</td>
-    <td class="c-fu fu-nd-cell">${tfund.toLocaleString()}</td>
-  </tr>`;
+  const gs = sumRows(data);
+  let html = totalRow(gs, 'total-row', 'TOTAL', 'All');
 
   const teamOrder = ['Team Chrishtu','Team Kumar','Team Prashanth','Team Samradh','Team Nithin','Team Tanmoy','Unassigned'];
 
   teamOrder.forEach(team => {
     if (!byTeam[team]) return;
 
+    const teamRows = Object.values(byTeam[team]).flat();
+    const ts = sumRows(teamRows);
+
     html += `<tr class="team-row"><td colspan="13">🏷 ${team}</td></tr>`;
+    html += totalRow(ts, 'team-total-row', `${team} TOTAL`, '');
 
     Object.entries(byTeam[team]).sort((a,b) => a[0].localeCompare(b[0])).forEach(([bde, rows]) => {
       const sorted = sortProgs(rows);
-
-      let bta=0,bat=0,bwt=0,bat1=0,bwt1=0,bat2=0,bwt2=0,bat3=0,bwt3=0,bfu=0,bfund=0;
-      sorted.forEach(r => {
-        bta  += n(r.total_assigned);
-        bat  += n(r.assigned_T);    bwt  += n(r.not_called_T);
-        bat1 += n(r.assigned_T1);   bwt1 += n(r.not_called_T1);
-        bat2 += n(r.assigned_T2);   bwt2 += n(r.not_called_T2);
-        bat3 += n(r.assigned_T3);   bwt3 += n(r.not_called_T3);
-        bfu  += n(r.followups_today);
-        bfund+= n(r.followups_today_not_dialed);
-      });
+      const bs = sumRows(sorted);
 
       html += `<tr class="bde-total grp-start">
         <td class="bde-cell" rowspan="${sorted.length + 1}">${bde}</td>
         <td class="left" style="color:#666;font-size:10px">ALL</td>
-        <td>${bta.toLocaleString()}</td>
-        <td class="c-t">${bat.toLocaleString()}</td><td class="c-t red">${bwt || '<span class="zero">0</span>'}</td>
-        <td class="c-t1">${bat1.toLocaleString()}</td><td class="c-t1 red">${bwt1 || '<span class="zero">0</span>'}</td>
-        <td class="c-t2">${bat2.toLocaleString()}</td><td class="c-t2 red">${bwt2 || '<span class="zero">0</span>'}</td>
-        <td class="c-t3">${bat3.toLocaleString()}</td><td class="c-t3 red">${bwt3 || '<span class="zero">0</span>'}</td>
-        <td class="c-fu">${bfu ? `<span class="fu">${bfu}</span>` : '<span class="zero">0</span>'}</td>
-        <td class="c-fu">${bfund ? `<span class="fu-nd">${bfund}</span>` : '<span class="zero">0</span>'}</td>
+        <td>${bs.ta.toLocaleString()}</td>
+        <td class="c-t">${bs.at.toLocaleString()}</td><td class="c-t red">${bs.wt || '<span class="zero">0</span>'}</td>
+        <td class="c-t1">${bs.at1.toLocaleString()}</td><td class="c-t1 red">${bs.wt1 || '<span class="zero">0</span>'}</td>
+        <td class="c-t2">${bs.at2.toLocaleString()}</td><td class="c-t2 red">${bs.wt2 || '<span class="zero">0</span>'}</td>
+        <td class="c-t3">${bs.at3.toLocaleString()}</td><td class="c-t3 red">${bs.wt3 || '<span class="zero">0</span>'}</td>
+        <td class="c-fu">${bs.fu ? `<span class="fu">${bs.fu}</span>` : '<span class="zero">0</span>'}</td>
+        <td class="c-fu">${bs.fund ? `<span class="fu-nd">${bs.fund}</span>` : '<span class="zero">0</span>'}</td>
       </tr>`;
 
       sorted.forEach(r => {
@@ -314,14 +288,14 @@ function render(data) {
 
   document.getElementById('tbody').innerHTML = html;
   document.getElementById('s-bde').textContent = Object.keys(byBde).length;
-  document.getElementById('s-total').textContent = ta.toLocaleString();
-  document.getElementById('s-fu').textContent = tfu.toLocaleString();
-  document.getElementById('s-fund').textContent = tfund.toLocaleString();
-  document.getElementById('w-total').textContent = (wt+wt1+wt2+wt3).toLocaleString();
-  document.getElementById('w-t').textContent = wt.toLocaleString();
-  document.getElementById('w-t1').textContent = wt1.toLocaleString();
-  document.getElementById('w-t2').textContent = wt2.toLocaleString();
-  document.getElementById('w-t3').textContent = wt3.toLocaleString();
+  document.getElementById('s-total').textContent = gs.ta.toLocaleString();
+  document.getElementById('s-fu').textContent = gs.fu.toLocaleString();
+  document.getElementById('s-fund').textContent = gs.fund.toLocaleString();
+  document.getElementById('w-total').textContent = (gs.wt+gs.wt1+gs.wt2+gs.wt3).toLocaleString();
+  document.getElementById('w-t').textContent = gs.wt.toLocaleString();
+  document.getElementById('w-t1').textContent = gs.wt1.toLocaleString();
+  document.getElementById('w-t2').textContent = gs.wt2.toLocaleString();
+  document.getElementById('w-t3').textContent = gs.wt3.toLocaleString();
 }
 
 function filter() {
@@ -346,7 +320,6 @@ async function load() {
   st.className = 'status';
   st.style.display = 'flex';
   document.getElementById('tw').style.display = 'none';
-
   try {
     const res = await fetch('/api/data');
     if (!res.ok) throw new Error(`Server error ${res.status}`);
@@ -362,7 +335,6 @@ async function load() {
     st.className = 'status err';
   }
 }
-
 load();
 </script>
 </body>
