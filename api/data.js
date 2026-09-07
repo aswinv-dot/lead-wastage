@@ -3,16 +3,21 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      'http://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830'
+      'https://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.csv'
     );
 
     if (!response.ok) throw new Error(`Metabase returned ${response.status}`);
 
-    const json = await response.json();
-    const cols = json.data.cols.map(c => c.name);
-    const rows = json.data.rows.map(row => {
+    const text = await response.text();
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+
+    const rows = lines.slice(1).map(line => {
+      const vals = line.split(',').map(v => v.trim().replace(/"/g, ''));
       const obj = {};
-      cols.forEach((c, i) => obj[c] = row[i]);
+      headers.forEach((h, i) => {
+        obj[h] = isNaN(vals[i]) || vals[i] === '' ? vals[i] : Number(vals[i]);
+      });
       return obj;
     });
 
