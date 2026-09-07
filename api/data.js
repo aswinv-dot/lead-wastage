@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      'http://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.json'
+      'http://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830'
     );
 
     if (!response.ok) throw new Error(`Metabase returned ${response.status}`);
