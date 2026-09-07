@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/data.js": {
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     { "source": "/api/data", "destination": "/api/data.js" }
   ]
