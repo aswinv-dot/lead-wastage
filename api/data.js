@@ -1,9 +1,19 @@
+let cache = null;
+let cacheTime = 0;
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
+  const now = Date.now();
+  if (cache && (now - cacheTime) < CACHE_TTL) {
+    return res.status(200).json(cache);
+  }
+
   try {
     const response = await fetch(
-      'https://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.csv'
+      'https://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.csv',
+      { signal: AbortSignal.timeout(290000) }
     );
 
     if (!response.ok) throw new Error(`Metabase returned ${response.status}`);
@@ -13,8 +23,7 @@ export default async function handler(req, res) {
 
     function parseCSVLine(line) {
       const result = [];
-      let cur = '';
-      let inQuotes = false;
+      let cur = '', inQuotes = false;
       for (let i = 0; i < line.length; i++) {
         const ch = line[i];
         if (ch === '"') { inQuotes = !inQuotes; }
@@ -36,8 +45,12 @@ export default async function handler(req, res) {
       return obj;
     });
 
+    cache = { rows };
+    cacheTime = now;
+
     res.status(200).json({ rows });
   } catch (e) {
+    if (cache) return res.status(200).json({ ...cache, stale: true });
     res.status(500).json({ error: e.message });
   }
 }
