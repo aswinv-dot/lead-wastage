@@ -1,12 +1,14 @@
 let cache = null;
 let cacheTime = 0;
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+const CACHE_TTL = 10 * 60 * 1000;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   const now = Date.now();
-  if (cache && (now - cacheTime) < CACHE_TTL) {
+  const bust = req.query.bust;
+
+  if (!bust && cache && (now - cacheTime) < CACHE_TTL) {
     return res.status(200).json(cache);
   }
 
