@@ -33,8 +33,9 @@
   .controls input, .controls select { padding: 5px 9px; border: 1px solid #d0d5e8; border-radius: 4px; font-size: 12px; outline: none; background: #fff; }
   .controls input { width: 180px; }
   .controls input:focus, .controls select:focus { border-color: #0b3d91; }
-  .refresh-btn { margin-left: auto; padding: 5px 14px; background: #0b3d91; color: #fff; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+  .refresh-btn { padding: 5px 14px; background: #0b3d91; color: #fff; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
   .refresh-btn:hover { background: #092d6e; }
+  .btn-group { margin-left: auto; display: flex; gap: 6px; }
   .table-wrap { padding: 16px 24px; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); min-width: 1000px; }
   thead tr:first-child { background: #0b3d91; color: #fff; }
@@ -139,7 +140,10 @@
     <option>Team Chrishtu</option><option>Team Kumar</option><option>Team Prashanth</option>
     <option>Team Samradh</option><option>Team Nithin</option><option>Team Tanmoy</option>
   </select>
-  <button class="refresh-btn" onclick="load()">↻ Refresh</button>
+  <div class="btn-group">
+    <button class="refresh-btn" onclick="load(false)">↻ Refresh</button>
+    <button class="refresh-btn" style="background:#8a1a1a" onclick="load(true)">⚡ Hard Refresh</button>
+  </div>
 </div>
 <div class="status" id="st"><div class="spinner"></div> Fetching data...</div>
 <div class="table-wrap" id="tw" style="display:none">
@@ -244,8 +248,6 @@ function render(data) {
   });
 
   const gs = sumRows(data);
-
-  // Unassigned — read from first row (same on all rows)
   const first = data[0] || {};
   const uT  = n(first.unassigned_T);
   const uT1 = n(first.unassigned_T1);
@@ -334,21 +336,22 @@ document.getElementById('q-bde').addEventListener('input', filter);
 document.getElementById('q-prog').addEventListener('change', filter);
 document.getElementById('q-team').addEventListener('change', filter);
 
-async function load() {
+async function load(hardRefresh = false) {
   const st = document.getElementById('st');
-  st.innerHTML = '<div class="spinner"></div> Fetching data...';
+  st.innerHTML = '<div class="spinner"></div> ' + (hardRefresh ? 'Fetching fresh data from Metabase...' : 'Fetching data...');
   st.className = 'status';
   st.style.display = 'flex';
   document.getElementById('tw').style.display = 'none';
   try {
-    const res = await fetch('/api/data');
+    const url = hardRefresh ? `/api/data?bust=${Date.now()}` : '/api/data';
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`Server error ${res.status}`);
     const json = await res.json();
     if (json.error) throw new Error(json.error);
     all = json.rows;
     st.style.display = 'none';
     document.getElementById('tw').style.display = 'block';
-    document.getElementById('ts').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN');
+    document.getElementById('ts').textContent = (hardRefresh ? '⚡ ' : '') + 'Updated ' + new Date().toLocaleTimeString('en-IN');
     filter();
   } catch(e) {
     st.innerHTML = `⚠ ${e.message}`;
