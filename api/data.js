@@ -9,51 +9,14 @@ export default async function handler(req, res) {
 
     if (!response.ok) throw new Error(`Metabase returned ${response.status}`);
 
-    const rawText = await response.text();
-    const text = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const json = await response.json();
 
-    console.log('CSV lines:', text.split('\n').length);
-    console.log('CSV size bytes:', text.length);
+    console.log('Total rows from JSON:', json.data.rows.length);
 
-    function parseCSV(text) {
-      const rows = [];
-      let cur = '', inQuotes = false, fields = [];
-
-      for (let i = 0; i < text.length; i++) {
-        const ch = text[i];
-        if (ch === '"') {
-          inQuotes = !inQuotes;
-        } else if (ch === ',' && !inQuotes) {
-          fields.push(cur.trim().replace(/\n/g, ' '));
-          cur = '';
-        } else if (ch === '\n' && !inQuotes) {
-          fields.push(cur.trim().replace(/\n/g, ' '));
-          if (fields.some(f => f !== '')) rows.push(fields);
-          fields = [];
-          cur = '';
-        } else {
-          cur += ch;
-        }
-      }
-      if (cur || fields.length) {
-        fields.push(cur.trim().replace(/\n/g, ' '));
-        if (fields.some(f => f !== '')) rows.push(fields);
-      }
-      return rows;
-    }
-
-    const allRows = parseCSV(text.trim());
-
-    console.log('Parsed rows:', allRows.length);
-
-    const headers = allRows[0].map(h => h.trim());
-
-    const rows = allRows.slice(1).map(vals => {
+    const cols = json.data.cols.map(c => c.name);
+    const rows = json.data.rows.map(row => {
       const obj = {};
-      headers.forEach((h, i) => {
-        const v = (vals[i] || '').trim();
-        obj[h] = v === '' ? null : isNaN(v) ? v : Number(v);
-      });
+      cols.forEach((c, i) => obj[c] = row[i]);
       return obj;
     });
 
