@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      'https://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.csv',
+      'https://metabase.terratern.com/public/question/c2c1f01a-a467-47c7-9949-179682185830.json',
       { signal: AbortSignal.timeout(290000) }
     );
 
