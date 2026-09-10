@@ -137,8 +137,10 @@
   <label>Team</label>
   <select id="q-team">
     <option value="">All Teams</option>
-    <option>Team Chrishtu</option><option>Team Kumar</option><option>Team Prashanth</option>
-    <option>Team Samradh</option><option>Team Nithin</option><option>Team Tanmoy</option>
+    <option>Team Chrishtu</option>
+    <option>Team Kumar</option>
+    <option>Team Prashanth</option>
+    <option>Team Sharath</option>
   </select>
   <div class="btn-group">
     <button class="refresh-btn" onclick="load(false)">↻ Refresh</button>
@@ -174,13 +176,12 @@
 let all = [];
 const PROG_ORDER = ['GOC','GHC','Ausbildung Germany','APR','CPR','Other'];
 const TEAMS = {
-  'Team Chrishtu': ['christhu','azhar','ijaz','sudheesh','debalina','satya','bijith','r.mosikhaa','mounika jalagam','kavitha natarajan','priyanshi kumari','toushif khan','ashay a zade','naitik sao','saheb kar','sreelakshmi k s','avinash a'],
-  'Team Kumar': ['kumaraguru m','kumarguru','aaliya firdous','nandhana d.r','divyabharathi','vivin','gokul','ajay sable','abinandanan','lotugadda khyathi','navya s','rahuls.r v','haritha senagala','ravina s','namrata belgali','anvitha g','urmi bhaumik','soumya gaur'],
+  'Team Chrishtu': ['christhu','azhar wazeer','azhar','ijaz','sudheesh t t','sudheesh','debalina','satya','bijith','r.mosikhaa','mounika jalagam','kavitha natarajan','priyanshi kumari','toushif khan','ashay a zade','naitik sao','saheb kar','sreelakshmi k s','avinash a'],
+  'Team Kumar': ['kumaraguru m','kumarguru','aaliya firdous','nandhana d.r','divyabharathi','vivin','gokul','ajay sable','abinandanan','lotugadda khyathi','navya s','rahuls.r v','senegala haritha','ravina s','namrata belgali','anvitha g','urmi bhaumik','soumya gaur'],
   'Team Prashanth': ['prashanth','bharati','sunaina','rithik','pius benjamin pinto','kalavati virupaksh kore','ananya s','madhu preethika s','adnan ahmed','rahul choudhary','stuti singh','harsha gowda','mohammed anees ahmed','jayita sarkar','gn anusha','sujoy subham padhi'],
-  'Team Samradh': ['samradh bhat m','rakshitha sv','maanika','harini','jyotiprakash','adwaith santhosh'],
-  'Team Nithin': ['nithin kumar s p','pratham','mouleessh','sammed','amrut','sam ajith','nelson godwin c'],
-  'Team Tanmoy': ['tanmoy mudi','mayank tiwari','bandita jena','suman','prashanth.m','frankeline joshua','neethu jain g n']
+  'Team Sharath': ['sharath yadav','samradh bhat m','rakshitha sv','maanika','harini','jyotiprakash','adwaith santhosh','nithin kumar s p','pratham','mouleessh','sammed badore','amrut','sam ajith','nelson godwin c','tanmoy mudi','mayank tiwari','bandita jena','suman','prashanth.m','frankeline joshua','neethu jain g n']
 };
+
 function getTeam(bdeName) {
   if (!bdeName) return 'Unassigned';
   const lower = bdeName.toLowerCase();
@@ -256,7 +257,7 @@ function render(data) {
 
   let html = totalRow(gs, 'total-row', 'TOTAL', 'All');
 
-  const teamOrder = ['Team Chrishtu','Team Kumar','Team Prashanth','Team Samradh','Team Nithin','Team Tanmoy','Unassigned'];
+  const teamOrder = ['Team Chrishtu','Team Kumar','Team Prashanth','Team Sharath','Unassigned'];
 
   teamOrder.forEach(team => {
     if (!byTeam[team]) return;
