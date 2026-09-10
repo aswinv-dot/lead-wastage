@@ -1,16 +1,5 @@
-let cache = null;
-let cacheTime = 0;
-const CACHE_TTL = 10 * 60 * 1000;
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-
-  const now = Date.now();
-  const bust = req.query.bust;
-
-  if (!bust && cache && (now - cacheTime) < CACHE_TTL) {
-    return res.status(200).json(cache);
-  }
 
   try {
     const response = await fetch(
@@ -71,12 +60,8 @@ export default async function handler(req, res) {
     console.log('Final rows:', rows.length);
     console.log('Sample row:', JSON.stringify(rows[0]));
 
-    cache = { rows };
-    cacheTime = now;
-
     res.status(200).json({ rows });
   } catch (e) {
-    if (cache) return res.status(200).json({ ...cache, stale: true });
     res.status(500).json({ error: e.message });
   }
 }
