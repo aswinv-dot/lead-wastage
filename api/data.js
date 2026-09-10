@@ -20,7 +20,11 @@ export default async function handler(req, res) {
 
     if (!response.ok) throw new Error(`Metabase returned ${response.status}`);
 
-    const text = await response.text();
+    const rawText = await response.text();
+    const text = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+    console.log('CSV lines:', text.split('\n').length);
+    console.log('CSV size bytes:', text.length);
 
     function parseCSV(text) {
       const rows = [];
@@ -50,6 +54,9 @@ export default async function handler(req, res) {
     }
 
     const allRows = parseCSV(text.trim());
+
+    console.log('Parsed rows:', allRows.length);
+
     const headers = allRows[0].map(h => h.trim());
 
     const rows = allRows.slice(1).map(vals => {
@@ -60,6 +67,9 @@ export default async function handler(req, res) {
       });
       return obj;
     });
+
+    console.log('Final rows:', rows.length);
+    console.log('Sample row:', JSON.stringify(rows[0]));
 
     cache = { rows };
     cacheTime = now;
