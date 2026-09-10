@@ -21,24 +21,38 @@ export default async function handler(req, res) {
     if (!response.ok) throw new Error(`Metabase returned ${response.status}`);
 
     const text = await response.text();
-    const lines = text.trim().split('\n');
 
-    function parseCSVLine(line) {
-      const result = [];
-      let cur = '', inQuotes = false;
-      for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (ch === '"') { inQuotes = !inQuotes; }
-        else if (ch === ',' && !inQuotes) { result.push(cur); cur = ''; }
-        else { cur += ch; }
+    function parseCSV(text) {
+      const rows = [];
+      let cur = '', inQuotes = false, fields = [];
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (ch === '"') {
+          inQuotes = !inQuotes;
+        } else if (ch === ',' && !inQuotes) {
+          fields.push(cur.trim().replace(/\n/g, ' '));
+          cur = '';
+        } else if (ch === '\n' && !inQuotes) {
+          fields.push(cur.trim().replace(/\n/g, ' '));
+          if (fields.some(f => f !== '')) rows.push(fields);
+          fields = [];
+          cur = '';
+        } else {
+          cur += ch;
+        }
       }
-      result.push(cur);
-      return result;
+      if (cur || fields.length) {
+        fields.push(cur.trim().replace(/\n/g, ' '));
+        if (fields.some(f => f !== '')) rows.push(fields);
+      }
+      return rows;
     }
 
-    const headers = parseCSVLine(lines[0]).map(h => h.trim());
-    const rows = lines.slice(1).map(line => {
-      const vals = parseCSVLine(line);
+    const allRows = parseCSV(text.trim());
+    const headers = allRows[0].map(h => h.trim());
+
+    const rows = allRows.slice(1).map(vals => {
       const obj = {};
       headers.forEach((h, i) => {
         const v = (vals[i] || '').trim();
